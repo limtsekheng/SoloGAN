@@ -1,6 +1,7 @@
 # Implementation of SoloGAN
 
-This repository is the unofficial implementation of SoloGAN in *Multimodal Image-to-Image Translation via a Single Generative Adversarial Network*
+This repository is an unofficial implementation of SoloGAN in *Multimodal Image-to-Image Translation via a Single Generative Adversarial Network*
+https://arxiv.org/pdf/2008.01681.pdf
 
 ## Dependency:
 PyTorch, Numpy, torchvision, PIL, tensorboardX
