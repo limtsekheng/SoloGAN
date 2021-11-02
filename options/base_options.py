@@ -19,11 +19,11 @@ class BaseOptions():
         # =Channel and number of domain
         self.parser.add_argument('--input_nc', type=int, default=3, help='# of input image channels')
         self.parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
-        self.parser.add_argument('--num_domains', type=int, default=5, help='# of domain number')
+        self.parser.add_argument('--num_domains', type=int, default=3, help='# of domain number')
         # ==style encoder
         self.parser.add_argument('--nef', type=int, default=64, help='# of style_encoder filters in first conv layer')
         self.parser.add_argument('--se_blocks', type=int, default=3, help='# of style encoder CD blocks')
-        self.parser.add_argument('--style_dim', type=int, default=8, help='#of latent dimension')
+        self.parser.add_argument('--style_dim', type=int, default=16, help='#of latent dimension')
         # ==content encoder
         self.parser.add_argument('--content_dim', type=int, default=256, help='#of latent dimension')
         self.parser.add_argument('--ce_blocks', type=int, default=4, help='# of content encoder R blocks')

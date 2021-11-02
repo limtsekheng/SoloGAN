@@ -4,8 +4,10 @@ import torch.utils.data as data
 from PIL import Image
 from torchvision.transforms import Compose, Resize, RandomCrop, CenterCrop, RandomHorizontalFlip, ToTensor, Normalize
 import random
+from ezc3d import c3d
 import numpy as np
 import torch
+from utils import generateTargetLabel
 
 
 class dataset_multi(data.Dataset):
@@ -39,12 +41,18 @@ class dataset_multi(data.Dataset):
         return
 
     def __getitem__(self, index):
-        imgs =[]
-        sourceID = [x for x in range(self.num_domains)]
-        for i in range(self.num_domains):
-            img = self.load_img((self.images[i][random.randint(0, len(self.images[i]) - 1)]))
-            imgs.append(img)
-        return imgs,sourceID
+        simgs ,timgs =[],[]
+        sourceID, targetID = [],[]
+        s = np.random.randint(0, self.num_domains)
+        img = self.load_img((self.images[s][random.randint(0, len(self.images[s]) - 1)]))
+        sourceID.append(s)
+        simgs.append(img)
+        t = generateTargetLabel(s, self.num_domains)
+        img = self.load_img((self.images[t][random.randint(0, len(self.images[t]) - 1)]))
+        targetID.append(t)
+        timgs.append(img)
+
+        return simgs,timgs,sourceID,targetID
 
     def load_img(self, img_name):
         img = Image.open(img_name).convert('RGB')

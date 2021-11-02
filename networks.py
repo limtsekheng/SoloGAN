@@ -52,12 +52,14 @@ class Discreminator(nn.Module):
         b =list(x.shape)[0]
         out = self.conv1(x)
         h = self.gap(out)               # (4,1024,1,1)
-        out1 = h.view(h.size(0), -1)     # (4,1024)
+        #out1 = h.view(h.size(0), -1)     # (4,1024)
+        out1 = h.view(-1)     # (4,1024)
         d = self.fc1(out1)               # (4,1)
         word = self.embed(y.long())        # (4,1024)
-        dis = torch.bmm(word.view(word.size(0),1,word.size(1)), h.view(h.size(0), h.size(1), 1))        # word:(4,1,1024) h:(4,1024,1) batch inner product
-        dis = dis.view(dis.size(0), -1) + d     # (4,1)
-        cls = self.conv2(out).view(b,-1)       #(4,4,1,1)
+        dis =torch.dot(word,out1)
+        # dis = torch.bmm(word.view(word.size(0),1,word.size(1)), h.view(h.size(0), h.size(1), 1))        # word:(4,1,1024) h:(4,1024,1) batch inner product
+        dis = dis.view(1, -1) + d     # (4,1)
+        cls = self.conv2(out).view(1,-1)       #(4,4,1,1)
         return dis,cls
 
 ##################################################################################

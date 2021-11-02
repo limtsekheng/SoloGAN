@@ -126,9 +126,11 @@ class SoloGAN(nn.Module):
         self.fake = Variable(Tensor(self.input_A.shape[0], 1).fill_(0.0), requires_grad=False)
 
         # Compute loss with real images.
-        out_src, out_cls = self.dis(self.input_B, self.input_B_label_1)                          #print(out_src) #,out_cls)        #print(out_src.shape, out_cls.shape)
+        out_src, out_cls = self.dis(self.input_B, self.input_B_label_1)
+        #print(out_src) #,out_cls)
+        print(out_src.shape, out_cls.shape)
         self.loss_dis_real = self.adversarial_loss(out_src,self.valid)         #   print(out_cls.shape,t.squeeze().shape)
-        self.loss_dis_cls = self.classification_loss(out_cls,self.input_B_label_1.squeeze())    #torch.nn.functional.cross_entropy(out_cls, t2)#, print(d_loss_real,d_loss_cls)
+        self.loss_dis_cls = self.classification_loss(out_cls,self.input_B_label_1.view(-1))    #torch.nn.functional.cross_entropy(out_cls, t2)#, print(d_loss_real,d_loss_cls)
 
         # Compute loss with fake (generated) images.
         out_src, out_cls = self.dis(self.fake_B_random.detach(),self.input_B_label_1)
@@ -147,7 +149,7 @@ class SoloGAN(nn.Module):
         # Adversarial loss and Domain classification loss
         out_src, out_cls = self.dis(self.fake_B_random, self.input_B_label_1)
         self.loss_gan_fake = self.adversarial_loss(out_src,self.valid)
-        self.loss_gan_cls = self.classification_loss(out_cls,self.input_B_label_1.squeeze())
+        self.loss_gan_cls = self.classification_loss(out_cls,self.input_B_label_1.view(-1))
 
         # Cycle consistence loss
         x_cyc_recons = self.gen.decode(self.z_content_a_prime,self.z_style_a,self.input_A_label)
